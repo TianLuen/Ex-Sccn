@@ -2,7 +2,7 @@
 // @name         Ex-sccn
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.2.4
+// @version      0.2.5
 // @description  更好的sccn
 // @author       TianLuen
 // @match        *://*.scratch-cn.cn/*
@@ -11,12 +11,12 @@
 
 (function() {
     'use strict';
-    $(function()//删除回复
+    $(function()//删除回复，不需要可以删除这一段
       {
         //var title = $(".checkbox-item");
         var title = $(".comment-line");
         var title2 = $(".sex-iconbar.row");
-        //上面三行代码。一是仅自己领域可用，二、三的是全站可用。
+        //尽管所有作品和留言板都有这个按钮，但是只有在自己的领域才能用
         var test_html = '<p></p>';
         var bt = document.createElement("button");
         bt.id = "dlt";
@@ -40,27 +40,28 @@
         title.append(test_html,bt);
         title2.append(test_html,bt);
     });
-    $(function()//主页简化
+
+    $(function()//主页简化，不建议大多数人使用，所以你完全可以删除这一段
       {
-        return;//删除这句启用此功能
         var title = document.querySelector('.channel-menu-indexbar.row');
         if(title)
         {
-            title.remove();
+            title.remove();//移除一块区域
             var dl = document.querySelectorAll('.slider-1');
             var i;
             for(i=0;i<dl.length;i++)
             {
-                if(i!=1&&i!=3)
+                if(i!=1&&i!=3)//1推荐 2热门 3新作品 4站长投币。这里的意思是，主页仅保留推荐和新作品
                 {
                     dl[i].remove();
                 }
             }
             title = document.querySelector('.index-menu-panel');
-            title.remove();
+            title.remove();//移除一块区域
         }
     });
-    $(function()//除广告
+
+    $(function()//除广告，不需要可以删除这一段
       {
         $(function()//adunit标签的广告
           {
@@ -91,4 +92,5 @@
             }
         });
     });
+
 })();
