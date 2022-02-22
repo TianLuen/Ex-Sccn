@@ -2,7 +2,7 @@
 // @name         Ex-sccn
 // @namespace    http://tampermonkey.net/
 // @license      MIT
-// @version      0.2.5
+// @version      0.3
 // @description  更好的sccn
 // @author       TianLuen
 // @match        *://*.scratch-cn.cn/*
@@ -11,7 +11,26 @@
 
 (function() {
     'use strict';
-    $(function()//删除回复，不需要可以删除这一段
+
+    $(function()//主页简化，不建议大多数人使用，所以你完全可以删除这一段。
+      {
+        var title = document.querySelector('.channel-menu-indexbar.row');
+        if(title)
+        {
+            title.remove();//移除一块区域
+            var dl = document.querySelectorAll('.slider-1');
+            var i;
+            for(i=0;i<dl.length;i++)
+            {
+                if(i!=1&&i!=3)//1推荐 2热门 3新作品 4站长投币。这里的意思是，主页仅保留推荐和新作品
+                {
+                    dl[i].remove();
+                }
+            }
+        }
+    });
+
+    $(function()//删除回复
       {
         //var title = $(".checkbox-item");
         var title = $(".comment-line");
@@ -41,27 +60,37 @@
         title2.append(test_html,bt);
     });
 
-    $(function()//主页简化，不建议大多数人使用，所以你完全可以删除这一段
+    $(function()//控制“已加鸡腿”的值
       {
-        var title = document.querySelector('.channel-menu-indexbar.row');
-        if(title)
+        var bt = document.createElement("button");
+        bt.id = "fake";
+        bt.textContent = "修改“已加鸡腿”的值";
+        bt.style.width = "80px";
+        bt.style.height = "40px";
+        bt.style.align = "center";
+        bt.onclick=function()
         {
-            title.remove();//移除一块区域
-            var dl = document.querySelectorAll('.slider-1');
-            var i;
-            for(i=0;i<dl.length;i++)
+            var x = document.querySelector('.project-iconbox.project-jtbtn.active');
+            var y = document.querySelector('.project-iconbox.project-like-btn.project-jtbtn');
+            var z = document.createElement("div");
+            if(x)
             {
-                if(i!=1&&i!=3)//1推荐 2热门 3新作品 4站长投币。这里的意思是，主页仅保留推荐和新作品
-                {
-                    dl[i].remove();
-                }
+                x.remove();
+                z.innerHTML = '<div class="project-iconbox project-like-btn project-jtbtn"><span class="project-iconbtn" title="点赞作品"><img src="/img/icon/jt.svg"></span><span class="text">加鸡腿</span></div>';
+                document.querySelector('.scratch-player-bottom').appendChild(z.firstChild);
             }
-            title = document.querySelector('.index-menu-panel');
-            title.remove();//移除一块区域
+            else
+            {
+                y.remove();
+                z.innerHTML = '<div class="project-iconbox project-jtbtn active"><span class="project-iconbtn"><img src="/img/icon/jt.svg"></span><span class="text">已加</span></div>';
+                document.querySelector('.scratch-player-bottom').appendChild(z.firstChild);
+            }
         }
+        var title = $(".row.mt-10");
+        title.append(bt);
     });
 
-    $(function()//除广告，不需要可以删除这一段
+    $(function()//除广告，现在好像已经没广告了，但还是保留着。
       {
         $(function()//adunit标签的广告
           {
